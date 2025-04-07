@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class HelloWorldController(){
+class HelloWorldController(
+    val usersRepository: UsersRepository
+){
 
     @GetMapping("/hello")
     fun helloWorld() =  "Hello World!"
@@ -22,10 +24,11 @@ class HelloWorldController(){
 
 // Post
     @PostMapping("/my-name")
-    fun sayMyName( @RequestBody request: SayMyNameRequest) = "Welcome ${request.name} !"
+    fun sayMyName( @RequestBody request: SayMyNameRequest) = usersRepository.save(User(name = request.name))
 
 }
 
 data class SayMyNameRequest(
     val name: String
 )
+
